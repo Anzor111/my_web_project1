@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+
+{% block title %}Дашборд{% endblock %}
+
+{% block content %}
+<h2>Привет, {{ current_user.username }}!</h2>
+
+<div class="row">
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                Профиль
+            </div>
+            <div class="card-body">
+                {% if profile %}
+                    Вес: {{ profile.weight }} кг<br>
+                    Рост: {{ profile.height }} см<br>
+                    Целевой вес: {{ profile.target_weight }} кг
+                {% else %}
+                    Заполните профиль
+                {% endif %}
+                <a href="{{ url_for('profile') }}" class="btn btn-sm btn-outline-primary mt-2">Редактировать</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">Последние записи питания</div>
+            <div class="card-body">
+                {% for entry in food_entries %}
+                    <p>{{ entry.food_name }} — {{ entry.calories }} ккал ({{ entry.date }})</p>
+                {% else %}
+                    <p>Нет записей</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">Последние тренировки</div>
+            <div class="card-body">
+                {% for workout in workouts %}
+                    <p>{{ workout.exercise_name }}
+                {% if workout.weight %} ({{ workout.weight }} кг){% endif %}
+                {% if workout.reps %} × {{ workout.reps }} повторений{% endif %} ({{ workout.date }})</p>
+                {% else %}
+                    <p>Нет записей</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<hr>
+
+<div class="row mt-4">
+    <div class="col-md-6">
+        <h4>Добавить запись о питании</h4>
+        <form method="POST" action="{{ url_for('add_food') }}">
+            <div class="mb-3">
+                <label class="form-label">Название продукта</label>
+                <input type="text" name="food_name" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Калории</label>
+                <input type="number" name="calories" class="form-control" required>
+            </div>
+            <button type="submit" class="btn btn-success">Добавить</button>
+        </form>
+    </div>
+
+    <div class="col-md-6">
+        <h4>Добавить тренировку</h4>
+        <form method="POST" action="{{ url_for('add_workout') }}">
+            <div class="mb-3">
+                <label class="form-label">Упражнение</label>
+                <input type="text" name="exercise_name" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Вес (кг)</label>
+                <input type="number" step="0.1" name="weight" class="form-control">
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Количество повторений</label>
+                <input type="number" name="reps" class="form-control">
+            </div>
+            <button type="submit" class="btn btn-primary">Добавить</button>
+        </form>
+    </div>
+</div>
+{% endblock %}
