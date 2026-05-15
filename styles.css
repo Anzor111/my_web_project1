@@ -1,0 +1,7 @@
+body {
+    background-image: url('../images/background.jpg');
+    background-size: cover;          /* Изображение растягивается на весь экран */
+    background-repeat: no-repeat;  /* Убираем повторение картинки */
+    background-attachment: fixed;     /* Фиксируем фон при прокрутке */
+    background-position: center;      /* Центрируем изображение */
+}

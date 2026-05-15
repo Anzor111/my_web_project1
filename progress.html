@@ -1,0 +1,77 @@
+
+{% extends "base.html" %}
+
+{% block title %}Прогресс{% endblock %}
+
+{% block content %}
+<h2>Мой прогресс</h2>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card mb-3">
+            <div class="card-header">
+                <h4>Динамика веса</h4>
+            </div>
+            <div class="card-body">
+                {% if weights %}
+                    <ul class="list-group">
+                        {% for weight in weights %}
+                            <li class="list-group-item">
+                                {{ weight.date.strftime('%d.%m') }}: {{ weight.weight }} кг
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p>Нет данных о весе.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h4>Целевой вес: {{ profile.target_weight }} кг</h4>
+            </div>
+            <div class="card-body">
+                Текущий вес: {{ profile.weight }} кг<br>
+                Осталось сбросить: {{ (profile.target_weight - profile.weight)|round(1) }} кг
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-3">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h4>Потребление калорий за неделю</h4>
+            </div>
+            <div class="card-body">
+                {% if food_entries %}
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Дата</th>
+                                <th>Блюдо</th>
+                                <th>Калории</th>
+                            </tr>
+                </thead>
+                <tbody>
+                    {% for entry in food_entries %}
+                        <tr>
+                            <td>{{ entry.date.strftime('%d.%m') }}</td>
+                            <td>{{ entry.food_name }}</td>
+                            <td>{{ entry.calories }} ккал</td>
+                        </tr>
+            {% endfor %}
+                </tbody>
+            </table>
+                {% else %}
+                    <p>Нет записей о питании за последнюю неделю.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
